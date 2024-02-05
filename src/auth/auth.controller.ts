@@ -17,7 +17,10 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const token = await this.authService.login(email, password);
-    response.cookie('authorization', token.accessToken);
+    response.cookie('authorization', token.accessToken, {
+      expires: new Date(Date.now() + 900000),
+      httpOnly: true,
+    });
     return token;
   }
 }
