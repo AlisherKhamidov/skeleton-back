@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 const roundsOfHashing = 10;
 
 async function main() {
-
   const passwordSabin = await bcrypt.hash('password-sabin', roundsOfHashing);
   const passwordAlex = await bcrypt.hash('password-alex', roundsOfHashing);
   // create two dummy users
@@ -79,7 +78,16 @@ async function main() {
     },
   });
 
-  console.log({ user1, user2, post1, post2, post3 });
+  const product1 = await prisma.product.create({
+    data: {
+      title: 'Prisma Client Just Became a Lot More Flexible',
+      price: 10,
+      description: 'Description',
+      photo: 'true',
+    },
+  });
+
+  console.log({ user1, user2, post1, post2, post3, product1 });
 }
 
 // execute the main function

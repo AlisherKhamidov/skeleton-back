@@ -6,9 +6,10 @@ import { ArticlesModule } from './articles/articles.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AddBearerPrefixMiddleware } from './common/middlewares/add-bearer-prefix.middleware';
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [PrismaModule, ArticlesModule, UsersModule, AuthModule],
+  imports: [PrismaModule, ArticlesModule, UsersModule, AuthModule, ProductsModule],
   controllers: [AppController],
   providers: [AppService],
 })

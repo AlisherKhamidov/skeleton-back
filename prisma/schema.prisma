@@ -31,3 +31,13 @@ model User {
   updatedAt DateTime  @updatedAt
   articles  Article[]
 }
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  title       String
+  photo       String
+  price       Decimal
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
