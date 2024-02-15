@@ -7,9 +7,19 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AddBearerPrefixMiddleware } from './common/middlewares/add-bearer-prefix.middleware';
 import { ProductsModule } from './products/products.module';
+import { MulterModule } from '@nestjs/platform-express/multer/multer.module';
 
 @Module({
-  imports: [PrismaModule, ArticlesModule, UsersModule, AuthModule, ProductsModule],
+  imports: [
+    PrismaModule,
+    ArticlesModule,
+    UsersModule,
+    AuthModule,
+    ProductsModule,
+    MulterModule.register({
+      dest: './files',
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

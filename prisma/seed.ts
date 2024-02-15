@@ -1,6 +1,7 @@
 // prisma/seed.ts
 
 import { PrismaClient } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 import * as bcrypt from 'bcrypt';
 
 // initialize Prisma Client

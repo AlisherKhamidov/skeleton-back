@@ -1,9 +1,18 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Res,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthEntity } from './entity/auth.entity';
 import { LoginDto } from './dto/login.dto';
 import { Response } from 'express';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -22,5 +31,26 @@ export class AuthController {
       httpOnly: true,
     });
     return token;
+  }
+
+  @Post('logout')
+  @ApiResponse({
+    status: 201,
+    description: 'Successful logout',
+  })
+  async logout(@Res({ passthrough: true }) response: Response) {
+    const token = 'x3xcssd';
+    // set cookie which is experied
+    response.cookie('authorization', token, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  getProfile(@Request() req) {
+    // Access user information from the request object
+    return req.user;
   }
 }
