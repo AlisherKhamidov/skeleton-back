@@ -22,6 +22,7 @@ model Article {
   authorId    Int?
 }
 
+
 model User {
   id        Int       @id @default(autoincrement())
   name      String?
@@ -30,6 +31,7 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   articles  Article[]
+  roles     String[] @default(["user"])
 }
 
 model Product {
@@ -37,7 +39,7 @@ model Product {
   title       String
   photo       String
   price       Float
-  isArchived  Boolean @default(false)
+  isArchived  Boolean  @default(false)
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

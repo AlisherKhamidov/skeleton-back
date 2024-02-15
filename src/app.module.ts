@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { AddBearerPrefixMiddleware } from './common/middlewares/add-bearer-prefix.middleware';
 import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express/multer/multer.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/role/roles.guard';
 
 @Module({
   imports: [
@@ -21,7 +23,13 @@ import { MulterModule } from '@nestjs/platform-express/multer/multer.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
