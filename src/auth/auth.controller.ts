@@ -45,6 +45,10 @@ export class AuthController {
       expires: new Date(Date.now()),
       httpOnly: true,
     });
+    return {
+      status: 201,
+      description: 'Successful logout',
+    };
   }
 
   @Get('profile')
