@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from '../auth/role/roles.decorator';
+import { Role } from '../auth/role/role.enum';
 
 @Controller('users')
 @ApiTags('users')
@@ -36,9 +39,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity, isArray: true })
-  async findAll() {
-    // console.log('******');
+  async findAll(@Req() req: any) {
+    console.log('******user');
     // console.log(request.headers);
+    console.log(req.user.id);
     const users = await this.usersService.findAll();
     return users.map((user) => new UserEntity(user));
   }
@@ -63,6 +67,7 @@ export class UsersController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   @ApiBearerAuth()
   @ApiOkResponse({ type: UserEntity })
   async remove(@Param('id', ParseIntPipe) id: number) {

@@ -8,12 +8,14 @@ import { PrismaService } from './../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthEntity } from './entity/auth.entity';
 import * as bcrypt from 'bcrypt';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private usersService: UsersService,
   ) {}
 
   async login(email: string, password: string): Promise<AuthEntity> {
@@ -37,5 +39,21 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign({ userId: user.id }),
     };
+  }
+  async validateUser(token: string) {
+    try {
+      const decodedToken = this.jwtService.verify(token, {
+        secret: process.env.JWT_SECRET,
+      });
+
+      // You might have logic here to fetch user information from a database
+      // using the decodedToken.sub (subject) or any other identifier from the token
+      // For demonstration purposes, let's assume user data is retrieved directly from the token.
+      const userId = decodedToken.userId; // Assuming user information is stored in the token payload under 'user'
+      const user = this.usersService.findOne(userId);
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 }

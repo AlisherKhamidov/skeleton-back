@@ -9,7 +9,10 @@ import { AddBearerPrefixMiddleware } from './common/middlewares/add-bearer-prefi
 import { ProductsModule } from './products/products.module';
 import { MulterModule } from '@nestjs/platform-express/multer/multer.module';
 import { APP_GUARD } from '@nestjs/core';
-import { RolesGuard } from './auth/role/roles.guard';
+import { RolesGuard } from './auth/roles.guard';
+import { AuthMiddleware } from './common/middlewares/auth.middleware';
+import { AuthService } from './auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -29,11 +32,13 @@ import { RolesGuard } from './auth/role/roles.guard';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    AuthService,
+    JwtService,
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AddBearerPrefixMiddleware).forRoutes('*'); // Apply middleware globally
+    consumer.apply(AddBearerPrefixMiddleware, AuthMiddleware).forRoutes('*'); // Apply middleware globally
     // Or apply middleware for specific routes
     // consumer.apply(AddBearerPrefixMiddleware).forRoutes('protected');
   }

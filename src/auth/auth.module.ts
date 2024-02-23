@@ -8,15 +8,19 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 import { UsersModule } from 'src/users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 
-export const jwtSecret = 'zjP9h6ZI5LoSKCRj';
+export const secret = process.env.JWT_SECRET;
 
 @Module({
   imports: [
     PrismaModule,
-    PassportModule,
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      property: 'user',
+      session: false,
+    }),
     JwtModule.register({
-      secret: jwtSecret,
-      signOptions: { expiresIn: '5m' }, // e.g. 7d, 24h
+      secret,
+      signOptions: { expiresIn: '20m' }, // e.g. 7d, 24h
     }),
     UsersModule,
   ],
