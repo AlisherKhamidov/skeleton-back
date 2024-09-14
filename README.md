@@ -161,3 +161,6 @@ npm install --save-dev @types/passport-jwt
 
 npm install bcrypt
 npm install --save-dev @types/bcrypt
+
+
+prisma db push
