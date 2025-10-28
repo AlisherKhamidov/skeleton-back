@@ -20,9 +20,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   const config = new DocumentBuilder()
-    .setTitle('Bruder')
-    .setDescription('The Bruder API description')
-    .setVersion('0.1')
+    .setTitle('PlayLoud')
+    .setDescription('PlayLoud API description')
+    .setVersion('1.0')
     .addBearerAuth()
     .build();
 
